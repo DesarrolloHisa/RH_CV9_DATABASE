@@ -1,6 +1,4 @@
 
-/* soy git*/
-
 insert into Rol values
 ('Admin'),
 ('Observador'),
