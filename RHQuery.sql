@@ -1,8 +1,52 @@
-
 insert into Rol values
 ('Admin'),
 ('Observador'),
 ('Empleado')
+
+insert into TipoCargo values
+('Aprendiz Lectiva'),
+('Aprendiz Productiva'),
+('Auxiliar Administrativo'),
+('Auxiliar Admisiones'),
+('Auxiliar Contable'),
+('Auxiliar De Enfermería'),
+('Auxiliar De Farmacia'),
+('Auxiliar De Mantenimiento'),
+('Auxiliar Servicios Generales'),
+('Colab.Donac'),
+('Contador'),
+('Coordinador Medico'),
+('Cuentas Medicas'),
+('Dermatologo'),
+('Directora'),
+('Enfermero'),
+('Fisioterapeuta'),
+('Gestor TICS'),
+('Lider administrativa y financiera'),
+('Lider Calidad'),
+('Lider de Mantenimiento e Ingeniería Biomédica'),
+('Lider de proyectos'),
+('Lider Seguridad Y Salud En El Trabajo'),
+('Lider Servicios Generales'),
+('Lider Sistemas De Información'),
+('Lider Talento Humano'),
+('Medico General Rural'),
+('Medico General'),
+('Nutricionista'),
+('Oficial De Cumplimiento'),
+('Otorrinolaringologo'),
+('Pediatra'),
+('Pediatra Endocrinologo'),
+('Psicologo'),
+('Regente De Farmacia'),
+('Revisor Fiscal'),
+('Revisor Fiscal Suplente'),
+('Secretaria'),
+('Servicios Generales de Alimentacion'),
+('Servicios Generales de Aseo'),
+('Servicios Generales de Mensajero'),
+('Servicios Generales de Vigilancia'),
+('Trabajador Social')
 
 --insert into ReferenciasPersonales values('a', 'a', 'a', 'a', 321, 321)
 --insert into ReferenciasFamiliares values('b', 'b', 'b', 'b', 321, 321)
@@ -130,6 +174,8 @@ select* from ContactoEmergencia
 Select * from ReferenciasPersonales
 select * from ReferenciasFamiliares
 select * from DatosPersonales
+select * from Contrato
+select * from Empleado
 
 insert into DatosPersonales values
 (10,'b', 1, 2, 22222, 1, 'w', 'x', 'y', 'z', '02/02/2003', 'kim', 'ara', 310, 'a@a.com', 'x', 'CL', 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
