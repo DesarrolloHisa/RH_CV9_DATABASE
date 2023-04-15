@@ -150,6 +150,31 @@ insert into DatosPersonales values
 ('c', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
 ('43157596', NULL, '2010-01-05', 'Colombia', 'Medellín', 3200000, 'prueba@gmail.com', 'Mujer', 2, 'Medellín', 2, 'Padres', 'Ninguno', 1, 'Casado', 20, 1, 1, NULL, NULL, '0001-01-01')
 
+insert into Empleado values
+(123, 'Bello', 'Juan', null, 'Ruiz', 'Melo', '02/28/2000', 'Masculino', 1)
+(12345, 'Medellin', 'ana', null, 'bellota', null, '02/28/2003', 'Femenino', 1)
+
+insert into Contrato values
+(123, 2, 'Adminitrativo', 1200000, 8, null, null, 240, null, '10/04/2022', null, null, null, 'Muy malo')
+(12345, 1, 'Adminitrativo', 1500000, 2, 4, 2, 240, null, '10/04/2023', null, null, null, 'Muy bueno')
+
+CREATE PROCEDURE ObtenerDatosEmpleado
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, e.Estado, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones
+    FROM Empleado e
+    JOIN Contrato c ON e.Documento = c.EmpleadoId
+    JOIN EPS ep ON c.EPSId = ep.Id
+    LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
+    LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
+    JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
+END
+GO
+
+EXEC ObtenerDatosEmpleado
+
 truncate table EPS
 
 drop database DB_CV
