@@ -12,16 +12,24 @@ insert into TipoCargo values
 ('Auxiliar De Enfermería'),
 ('Auxiliar De Farmacia'),
 ('Auxiliar De Mantenimiento'),
+('Auxiliar Seguridad Y Salud En El Trabajo'),
 ('Auxiliar Servicios Generales'),
+('Anestesiologo'),
+('Cirujano Infantil'),
+('Cirujano Plastico'),
 ('Colab.Donac'),
+('Comunicadora'),
 ('Contador'),
 ('Coordinador Medico'),
 ('Cuentas Medicas'),
 ('Dermatologo'),
 ('Directora'),
 ('Enfermero'),
+('Enfermero Jefe'),
+('Enfermero Jefe Rural'),
 ('Fisioterapeuta'),
 ('Gestor TICS'),
+('Gestor de Cuentas'),
 ('Lider administrativa y financiera'),
 ('Lider Calidad'),
 ('Lider de Mantenimiento e Ingeniería Biomédica'),
@@ -30,12 +38,17 @@ insert into TipoCargo values
 ('Lider Servicios Generales'),
 ('Lider Sistemas De Información'),
 ('Lider Talento Humano'),
+('Medico Asistencial'),
 ('Medico General Rural'),
 ('Medico General'),
+('Neurologo'),
 ('Nutricionista'),
 ('Oficial De Cumplimiento'),
+('Odontopediatra'),
+('Ortopedista'),
 ('Otorrinolaringologo'),
 ('Pediatra'),
+('Pediatra Cardiologo'),
 ('Pediatra Endocrinologo'),
 ('Psicologo'),
 ('Regente De Farmacia'),
@@ -46,13 +59,10 @@ insert into TipoCargo values
 ('Servicios Generales de Aseo'),
 ('Servicios Generales de Mensajero'),
 ('Servicios Generales de Vigilancia'),
-('Trabajador Social')
+('Terapeuta de Familia y Pareja'),
+('Trabajador Social'),
+('Voluntario')
 
---insert into ReferenciasPersonales values('a', 'a', 'a', 'a', 321, 321)
---insert into ReferenciasFamiliares values('b', 'b', 'b', 'b', 321, 321)
-insert into DatosGenerales values ('a', 'a', 1, 'a', 'a')
-insert into PersonasACargo values(1,2,3,4)
-insert into Practicas Values ('a', 'b', 'c', '12/02/2003', '12/01/2024', 'Si')
 insert into TipoVinculo Values
 ('Aprendiz etapa electiva'),
 ('Aprendiz etapa productiva'),
@@ -65,6 +75,7 @@ insert into TipoVinculo Values
 ('Practicante'),
 ('Prestacion de servicios'),
 ('Voluntario')
+
 insert into TipoContrato Values
 ('Aprendiz'),
 ('Docencia servicio'),
@@ -81,16 +92,13 @@ insert into TipoDocumento Values
 ('PEP'),
 ('Tarjeta de identidad')
 
-insert into InfoDocumento values (1,'cest','bussiness'),(2,'c','b')
+insert into InfoDocumento values
+(1,'Colombia', 'Medellin')
+
+select * from Usuario
 
 insert into Usuario values
-('a', 1, 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 3, 2, 2, 'Alex', null, 'Avec', null, 1),
-('b', 2, '3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d', 3, 2, 2, 'Alex', 'Esteban', 'Avec', null, 1),
-('c', 3, '2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6', 3, 2, 2, 'Alex', null, 'Avec', null, 1),
-('d', 3, '18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4', 3, 2, 2, 'Alex', null, 'Avec', 'Ruiz', 1),
-('e', 3, '3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea', 3, 2, 2, 'Alex', null, 'Avec', 'Ruiz', 0),
-('3', 3, '3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea', 4, 2, 2, 'Alex', null, 'Avec', 'Ruiz', 0),
-('43157596', 3, '09b7ada9b425fdfc15a92390a11d999fe33e531bb7e2a0c5394d95e2558d4bea', 5, 3, 1, 'Maragarita', 'Maria', 'Zapata', 'Agudelo', 1)
+('H1SADM1N', 1, '53c9c31b5153d195575884955afada17b42a04cfadd7a25064f0a234e5182acd', 5, 4, 1, 'Admin', null, 'Hisa', null, 1)
 
 insert into EPS Values
 ('ALIANSALUD EPS'),
@@ -144,29 +152,7 @@ insert into TipoVinculacion Values
 ('Interdependencia'),
 ('Voluntario')
 
-insert into Direccion values
-('Calle', 'chan', 'ty', 'chi', 'chon', 'Calle chantychichon'),
-('Avenida', '20','2', '4', null, 'Avenida 20 # 2 - 4')
-
-insert into DatosPersonales values
-('b', 22222, '02/02/2003', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('a', 22222, '02/02/2004', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('b', 22222, '02/02/2005', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('a', 22222, '02/02/2006', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('b', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('a', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('c', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
-('43157596', NULL, '2010-01-05', 'Colombia', 'Medellín', 3200000, 'prueba@gmail.com', 'Mujer', 2, 'Medellín', 2, 'Padres', 'Ninguno', 1, 'Casado', 20, 1, 1, NULL, NULL, '0001-01-01')
-
-insert into Empleado values
-(123, 'Bello', 'Juan', null, 'Ruiz', 'Melo', '02/28/2000', 'Masculino', 1),
-(12345, 'Medellin', 'ana', null, 'bellota', null, '02/28/2003', 'Femenino', 1)
-
-insert into Contrato values
-(123, 2, 'Adminitrativo', 1200000, 8, null, null, 240, null, '10/04/2022', null, null, null, 'Muy malo'),
-(12345, 1, 'Adminitrativo', 1500000, 2, 4, 2, 240, null, '10/04/2023', null, null, null, 'Muy bueno')
-
-
+--=====================PROCEDURES==================================
 --Contracts
 CREATE PROCEDURE GetAllContracts
 AS
@@ -302,6 +288,47 @@ BEGIN
 	WHERE Estado = 1
 END
 GO
+
+--///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+insert into Usuario values
+('a', 1, 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 3, 2, 2, 'Alex', null, 'Avec', null, 1),
+('b', 2, '3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d', 3, 2, 2, 'Alex', 'Esteban', 'Avec', null, 1),
+('c', 3, '2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6', 3, 2, 2, 'Alex', null, 'Avec', null, 1),
+('d', 3, '18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4', 3, 2, 2, 'Alex', null, 'Avec', 'Ruiz', 1),
+('e', 3, '3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea', 3, 2, 2, 'Alex', null, 'Avec', 'Ruiz', 0),
+('3', 3, '3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea', 4, 2, 2, 'Alex', null, 'Avec', 'Ruiz', 0),
+('43157596', 3, '09b7ada9b425fdfc15a92390a11d999fe33e531bb7e2a0c5394d95e2558d4bea', 5, 3, 1, 'Maragarita', 'Maria', 'Zapata', 'Agudelo', 1)
+
+/*--insert into ReferenciasPersonales values('a', 'a', 'a', 'a', 321, 321)
+--insert into ReferenciasFamiliares values('b', 'b', 'b', 'b', 321, 321)
+insert into DatosGenerales values ('a', 'a', 1, 'a', 'a')
+insert into PersonasACargo values(1,2,3,4)
+insert into Practicas Values ('a', 'b', 'c', '12/02/2003', '12/01/2024', 'Si')*/
+
+--insert into Direccion values
+--('Calle', 'chan', 'ty', 'chi', 'chon', 'Calle chantychichon'),
+--('Avenida', '20','2', '4', null, 'Avenida 20 # 2 - 4')
+
+--insert into DatosPersonales values
+--('b', 22222, '02/02/2003', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('a', 22222, '02/02/2004', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('b', 22222, '02/02/2005', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('a', 22222, '02/02/2006', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('b', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('a', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('c', 22222, '02/02/2021', 'kim', 'ara', 310, 'a@a.com', 'x', 1, 'Belt', 3, 'dad', 'nigga', 1, 'soltero', 1, 2, 3, 1, 1, SYSDATETIME()),
+--('43157596', NULL, '2010-01-05', 'Colombia', 'Medellín', 3200000, 'prueba@gmail.com', 'Mujer', 2, 'Medellín', 2, 'Padres', 'Ninguno', 1, 'Casado', 20, 1, 1, NULL, NULL, '0001-01-01')
+
+--insert into Empleado values
+--(123, 'Bello', 'Juan', null, 'Ruiz', 'Melo', '02/28/2000', 'Masculino', 1),
+--(12345, 'Medellin', 'ana', null, 'bellota', null, '02/28/2003', 'Femenino', 1)
+
+--insert into Contrato values
+--(123, 2, 'Adminitrativo', 1200000, 8, null, null, 240, null, '10/04/2022', null, null, null, 'Muy malo'),
+--(12345, 1, 'Adminitrativo', 1500000, 2, 4, 2, 240, null, '10/04/2023', null, null, null, 'Muy bueno')
+
+
 
 truncate table EPS
 
@@ -1715,3 +1742,4 @@ INSERT INTO Municipio VALUES
 	(1098,'Íquira',41),
 	(1099,'Úmbita',15),
 	(1100,'Útica',25);
+	*/
