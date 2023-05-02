@@ -456,6 +456,23 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE GetEmployeeContracts
+@doc int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, e.Estado, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones
+	FROM Empleado e
+	JOIN Contrato c ON e.Documento = c.EmpleadoId
+	JOIN EPS ep ON c.EPSId = ep.Id
+	LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
+	LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
+	JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
+	WHERE e.Documento = @doc 
+END
+GO
+
 --Students
 CREATE PROCEDURE GetStudents
 AS
