@@ -295,7 +295,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-	SELECT 
+	SELECT DISTINCT
 		Usuario.[User] as Doumento,
 
 		Rol.Tipo as TipoRol,
@@ -424,32 +424,188 @@ BEGIN
 END
 GO
 
+
+--===========================================================================================================================================================================================================================
+
+WITH CTE AS (
+    SELECT
+	Usuario.[User] as Documento,
+
+		Rol.Tipo as TipoRol,
+		--Usuario.RolId,
+
+		--Usuario.[Password],
+
+		TipoVinculo.Tipo as TipoVinculo,
+		--Usuario.TipoVinculoId,
+
+		TipoContrato.Tipo as TipoContrato,
+		--Usuario.TipoContratoId,
+
+		TipoDocumento.Tipo as TipoDocumento,
+
+		InfoDocumento.PaisExpedicion,
+		InfoDocumento.MunicipioExpedicion,
+		--Usuario.InfoDocumentoId,
+
+		Usuario.PrimerNombre,
+		Usuario.SegundoNombre,
+		Usuario.PrimerApellido,
+		Usuario.SegundoApellido,
+		Usuario.Estado,
+
+		DatosPersonales.LibretaMilitar,
+		DatosPersonales.FechaNacimiento,
+		DatosPersonales.PaisNacimiento,
+		DatosPersonales.MunicipioNacimiento,
+		DatosPersonales.Celular,
+		DatosPersonales.Email,
+		DatosPersonales.Sexo,
+
+		Direccion.DireccionCompleta as Direccion,
+		--DatosPersonales.DireccionId,
+    
+		DatosPersonales.MunicipioResidencia,
+		DatosPersonales.Estrato,
+		DatosPersonales.ViveCon,
+		DatosPersonales.GrupoEtnico,
+
+		PersonasACargo.Hijo as HijosACargo,
+		PersonasACargo.Conyugue as ConyuguesACargo,
+		PersonasACargo.Padres as PadresACargo,
+		PersonasACargo.Otros as OtrasPersonasACargo,
+		--DatosPersonales.PersonasACargoId,
+
+		DatosPersonales.EstadoCivil,
+
+		EPS.Tipo as EPS,
+		--DatosPersonales.EPSId,
+
+		FondoPensiones.Tipo as FondoPensiones,
+		--DatosPersonales.FondoPensionesId,
+
+		FondoCesantias.Tipo as FondoCesantias,
+		--DatosPersonales.FondoCesantiasId,
+
+		DatosGenerales.ComoSupo,
+		DatosGenerales.OtrosIngresos as TieneOtrosIngresos,
+		DatosGenerales.Ingreso,
+		DatosGenerales.ParientesTrabajando as ParientesEnLaEmpresa,
+		DatosGenerales.TipoVivienda,
+		--DatosPersonales.DatosGeneralesId,
+
+		Practicas.Institucion,
+		Practicas.Programa,
+		Practicas.Titulo,
+		Practicas.FechaInicio,
+		Practicas.FechaFinalizacion,
+		Practicas.DocenciaServicios,
+		--DatosPersonales.PracticasId,
+
+		ContactoEmergencia.Nombre as ContactoEmergenciaNombre,
+		ContactoEmergencia.Parentesco as ContactoEmergenciaParentesco,
+		ContactoEmergencia.Celular as ContactoEmergenciaCelular,
+
+		DatosFamiliares.Nombre as DatoFamiliarNombre,
+		FORMAT(DatosFamiliares.FechaNacimiento, 'dd-MM-yyyy') as DatoFamiliarFechaNacimiento,
+		DatosFamiliares.Parentesco as DatoFamiliarParentesco,
+		DatosFamiliares.Ocupacion as DatoFamiliarOcupacion,
+
+		Escolaridad.Grado as EscolaridadGrado,
+		Escolaridad.Titulo as EscolaridadTitulo,
+		Escolaridad.Institucion as EscolaridadInstitucion,
+		Escolaridad.[Year] as EscolaridadAnio,
+
+		InfoLaboral.FechaIngreso as InfoLaboralFechaIngreso,
+		InfoLaboral.FechaRetiro as InfoLaboralFechaRetiro,
+		InfoLaboral.NombreEmpresa as InfoLaboralNombreEmpresa,
+		InfoLaboral.MotivoRetiro as InfoLaboralMotivoRetiro,
+		InfoLaboral.Celular as InfoLaboralCelular,
+		InfoLaboral.Cargo as InfoLaboralCargo,
+
+		ReferenciasFamiliares.Nombre as ReferenciasFamiliaresNombre,
+		ReferenciasFamiliares.Parentesco as ReferenciasFamiliaresParentesco,
+		ReferenciasFamiliares.Celular as ReferenciasFamiliaresCelular,
+
+		ReferenciasPersonales.Nombre as ReferenciasPersonalesNombre,
+		ReferenciasPersonales.Parentesco as ReferenciasPersonalesParentesco,
+		ReferenciasPersonales.Celular as ReferenciasPersonalesCelular,
+
+		DatosPersonales.FechaCreacion,
+
+		ROW_NUMBER() OVER (PARTITION BY Usuario.[User] ORDER BY (SELECT NULL)) AS RowNum
+
+		FROM 
+		Usuario
+		INNER JOIN DatosPersonales ON Usuario.[User] = DatosPersonales.UsuarioId
+		INNER JOIN Rol ON Usuario.RolId = Rol.Id
+		INNER JOIN TipoVinculo ON Usuario.TipoVinculoId = TipoVinculo.Id
+		INNER JOIN TipoContrato ON Usuario.TipoContratoId = TipoContrato.Id
+		INNER JOIN InfoDocumento ON Usuario.InfoDocumentoId = InfoDocumento.Id
+		INNER JOIN TipoDocumento ON InfoDocumento.TipoDocumentoId = TipoDocumento.Id
+		LEFT JOIN Direccion ON DatosPersonales.DireccionId = Direccion.Id
+		LEFT JOIN PersonasACargo ON DatosPersonales.PersonasACargoId = PersonasACargo.Id
+		LEFT JOIN EPS ON DatosPersonales.EPSId = EPS.Id
+		LEFT JOIN FondoPensiones ON DatosPersonales.FondoPensionesId = FondoPensiones.Id
+		LEFT JOIN FondoCesantias ON DatosPersonales.FondoCesantiasId = FondoCesantias.Id
+		LEFT JOIN DatosGenerales ON DatosPersonales.DatosGeneralesId = DatosGenerales.Id
+		LEFT JOIN Practicas ON DatosPersonales.PracticasId = Practicas.Id
+		LEFT JOIN ContactoEmergencia ON ContactoEmergencia.DatosPersonalesId = DatosPersonales.Id
+		LEFT JOIN DatosFamiliares ON DatosFamiliares.DatosPersonalesId = DatosPersonales.Id
+		LEFT JOIN Escolaridad ON Escolaridad.DatosPersonalesId = DatosPersonales.Id
+		LEFT JOIN InfoLaboral ON InfoLaboral.DatosPersonalesId = DatosPersonales.Id
+		LEFT JOIN ReferenciasFamiliares ON ReferenciasFamiliares.DatosPersonalesId = DatosPersonales.Id
+		LEFT JOIN ReferenciasPersonales ON ReferenciasPersonales.DatosPersonalesId = DatosPersonales.Id
+		WHERE Usuario.Estado = 1
+
+		)
+SELECT *
+FROM CTE
+WHERE RowNum = 1;
+
+
+
+
+--===========================================================================================================================================================================================================================
+
+
 --Contracts
 CREATE PROCEDURE GetAllContracts
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, e.Estado, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones,
+    CASE
+        WHEN e.Estado = 1 THEN 'Activo'
+        WHEN e.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Empleado e
     JOIN Contrato c ON e.Documento = c.EmpleadoId
     JOIN EPS ep ON c.EPSId = ep.Id
     LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
+	LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
     LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
     JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
 END
 GO
+
 
 CREATE PROCEDURE GetActiveEmployeeContracts
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, e.Estado, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones, e.Estado,
+	CASE
+        WHEN e.Estado = 1 THEN 'Activo'
+        WHEN e.Estado = 0 THEN 'Inactivo'
+    END AS Estado
 	FROM Empleado e
 	JOIN Contrato c ON e.Documento = c.EmpleadoId
 	JOIN EPS ep ON c.EPSId = ep.Id
 	LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
+	LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
 	LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
 	JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
 	WHERE e.Estado = 1
@@ -462,7 +618,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, e.Estado, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones, e.Estado,
+	CASE
+        WHEN e.Estado = 1 THEN 'Activo'
+        WHEN e.Estado = 0 THEN 'Inactivo'
+    END AS Estado
 	FROM Empleado e
 	JOIN Contrato c ON e.Documento = c.EmpleadoId
 	JOIN EPS ep ON c.EPSId = ep.Id
@@ -478,11 +638,14 @@ CREATE PROCEDURE GetStudents
 AS
 BEGIN
     SELECT e.Documento, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaIngreso,
-           tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, e.Institucion, e.AreaFuncional, e.FechaRetiro,
-           e.MotivoRetiro, e.Observaciones, e.Estado
+           tv.Tipo AS TipoVinculacion, e.TipoCargo, e.Institucion, e.AreaFuncional, e.FechaRetiro,
+           e.MotivoRetiro, e.Observaciones, e.Estado,
+	CASE
+        WHEN e.Estado = 1 THEN 'Activo'
+        WHEN e.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Estudiante e
     INNER JOIN TipoVinculacion tv ON e.TipoVinculacionId = tv.Id
-    INNER JOIN TipoCargo tc ON e.TipoCargoId = tc.Id
 END
 GO
 
@@ -490,11 +653,14 @@ CREATE PROCEDURE GetActiveStudents
 AS
 BEGIN
     SELECT e.Documento, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaIngreso,
-           tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, e.Institucion, e.AreaFuncional, e.FechaRetiro,
-           e.MotivoRetiro, e.Observaciones, e.Estado
+           tv.Tipo AS TipoVinculacion, e.TipoCargo, e.Institucion, e.AreaFuncional, e.FechaRetiro,
+           e.MotivoRetiro, e.Observaciones, e.Estado,
+	CASE
+        WHEN e.Estado = 1 THEN 'Activo'
+        WHEN e.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Estudiante e
     INNER JOIN TipoVinculacion tv ON e.TipoVinculacionId = tv.Id
-    INNER JOIN TipoCargo tc ON e.TipoCargoId = tc.Id
 	WHERE Estado = 1
 END
 GO
@@ -505,7 +671,11 @@ AS
 BEGIN
     SELECT v.Documento, v.PrimerNombre, v.SegundoNombre, v.PrimerApellido, v.SegundoApellido, v.FechaIngreso,
            tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, v.AreaFuncional, v.FechaRetiro,
-           v.MotivoRetiro, v.Observaciones, v.Estado
+           v.MotivoRetiro, v.Observaciones, v.Estado,
+	CASE
+        WHEN v.Estado = 1 THEN 'Activo'
+        WHEN v.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Voluntario v
     INNER JOIN TipoVinculacion tv ON v.TipoVinculacionId = tv.Id
     INNER JOIN TipoCargo tc ON v.TipoCargoId = tc.Id
@@ -517,7 +687,11 @@ AS
 BEGIN
     SELECT v.Documento, v.PrimerNombre, v.SegundoNombre, v.PrimerApellido, v.SegundoApellido, v.FechaIngreso,
            tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, v.AreaFuncional, v.FechaRetiro,
-           v.MotivoRetiro, v.Observaciones, v.Estado
+           v.MotivoRetiro, v.Observaciones, v.Estado,
+	CASE
+        WHEN v.Estado = 1 THEN 'Activo'
+        WHEN v.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Voluntario v
     INNER JOIN TipoVinculacion tv ON v.TipoVinculacionId = tv.Id
     INNER JOIN TipoCargo tc ON v.TipoCargoId = tc.Id
@@ -531,7 +705,11 @@ AS
 BEGIN
     SELECT i.Documento, i.PrimerNombre, i.SegundoNombre, i.PrimerApellido, i.SegundoApellido, i.FechaIngreso,
            tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, i.Institucion, i.AreaFuncional, i.FechaRetiro,
-           i.MotivoRetiro, i.Observaciones, i.Estado
+           i.MotivoRetiro, i.Observaciones, i.Estado,
+	CASE
+        WHEN i.Estado = 1 THEN 'Activo'
+        WHEN i.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Interdependencia i
     INNER JOIN TipoVinculacion tv ON i.TipoVinculacionId = tv.Id
     INNER JOIN TipoCargo tc ON i.TipoCargoId = tc.Id
@@ -543,7 +721,11 @@ AS
 BEGIN
     SELECT i.Documento, i.PrimerNombre, i.SegundoNombre, i.PrimerApellido, i.SegundoApellido, i.FechaIngreso,
            tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, i.Institucion, i.AreaFuncional, i.FechaRetiro,
-           i.MotivoRetiro, i.Observaciones, i.Estado
+           i.MotivoRetiro, i.Observaciones, i.Estado,
+	CASE
+        WHEN i.Estado = 1 THEN 'Activo'
+        WHEN i.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM Interdependencia i
     INNER JOIN TipoVinculacion tv ON i.TipoVinculacionId = tv.Id
     INNER JOIN TipoCargo tc ON i.TipoCargoId = tc.Id
@@ -557,7 +739,11 @@ AS
 BEGIN
     SELECT d.Documento, d.PrimerNombre, d.SegundoNombre, d.PrimerApellido, d.SegundoApellido, d.FechaIngreso,
            tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, d.Institucion, d.AreaFuncional, d.FechaRetiro,
-           d.MotivoRetiro, d.Observaciones, d.Estado
+           d.MotivoRetiro, d.Observaciones, d.Estado,
+	CASE
+        WHEN d.Estado = 1 THEN 'Activo'
+        WHEN d.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM DocenciaServicio d
     INNER JOIN TipoVinculacion tv ON d.TipoVinculacionId = tv.Id
     INNER JOIN TipoCargo tc ON d.TipoCargoId = tc.Id
@@ -569,7 +755,11 @@ AS
 BEGIN
     SELECT d.Documento, d.PrimerNombre, d.SegundoNombre, d.PrimerApellido, d.SegundoApellido, d.FechaIngreso,
            tv.Tipo AS TipoVinculacion, tc.Tipo AS TipoCargo, d.Institucion, d.AreaFuncional, d.FechaRetiro,
-           d.MotivoRetiro, d.Observaciones, d.Estado
+           d.MotivoRetiro, d.Observaciones, d.Estado,
+	CASE
+        WHEN d.Estado = 1 THEN 'Activo'
+        WHEN d.Estado = 0 THEN 'Inactivo'
+    END AS Estado
     FROM DocenciaServicio d
     INNER JOIN TipoVinculacion tv ON d.TipoVinculacionId = tv.Id
     INNER JOIN TipoCargo tc ON d.TipoCargoId = tc.Id
