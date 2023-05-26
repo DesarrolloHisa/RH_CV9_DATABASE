@@ -426,142 +426,297 @@ GO
 
 
 --===========================================================================================================================================================================================================================
+CREATE PROCEDURE GetAllHV
+AS
+BEGIN
+    SET NOCOUNT ON;
 
-WITH CTE AS (
-    SELECT
-	Usuario.[User] as Documento,
+	WITH CTE AS (
+		SELECT
+		Usuario.[User] as Documento,
 
-		Rol.Tipo as TipoRol,
-		--Usuario.RolId,
+			Rol.Tipo as TipoRol,
+			--Usuario.RolId,
 
-		--Usuario.[Password],
+			--Usuario.[Password],
 
-		TipoVinculo.Tipo as TipoVinculo,
-		--Usuario.TipoVinculoId,
+			TipoVinculo.Tipo as TipoVinculo,
+			--Usuario.TipoVinculoId,
 
-		TipoContrato.Tipo as TipoContrato,
-		--Usuario.TipoContratoId,
+			TipoContrato.Tipo as TipoContrato,
+			--Usuario.TipoContratoId,
 
-		TipoDocumento.Tipo as TipoDocumento,
+			TipoDocumento.Tipo as TipoDocumento,
 
-		InfoDocumento.PaisExpedicion,
-		InfoDocumento.MunicipioExpedicion,
-		--Usuario.InfoDocumentoId,
+			InfoDocumento.PaisExpedicion,
+			InfoDocumento.MunicipioExpedicion,
+			--Usuario.InfoDocumentoId,
 
-		Usuario.PrimerNombre,
-		Usuario.SegundoNombre,
-		Usuario.PrimerApellido,
-		Usuario.SegundoApellido,
-		Usuario.Estado,
+			Usuario.PrimerNombre,
+			Usuario.SegundoNombre,
+			Usuario.PrimerApellido,
+			Usuario.SegundoApellido,
 
-		DatosPersonales.LibretaMilitar,
-		DatosPersonales.FechaNacimiento,
-		DatosPersonales.PaisNacimiento,
-		DatosPersonales.MunicipioNacimiento,
-		DatosPersonales.Celular,
-		DatosPersonales.Email,
-		DatosPersonales.Sexo,
+			DatosPersonales.LibretaMilitar,
+			DatosPersonales.FechaNacimiento,
+			DatosPersonales.PaisNacimiento,
+			DatosPersonales.MunicipioNacimiento,
+			DatosPersonales.Celular,
+			DatosPersonales.Email,
+			DatosPersonales.Sexo,
 
-		Direccion.DireccionCompleta as Direccion,
-		--DatosPersonales.DireccionId,
+			Direccion.DireccionCompleta as Direccion,
+			--DatosPersonales.DireccionId,
     
-		DatosPersonales.MunicipioResidencia,
-		DatosPersonales.Estrato,
-		DatosPersonales.ViveCon,
-		DatosPersonales.GrupoEtnico,
+			DatosPersonales.MunicipioResidencia,
+			DatosPersonales.Estrato,
+			DatosPersonales.ViveCon,
+			DatosPersonales.GrupoEtnico,
 
-		PersonasACargo.Hijo as HijosACargo,
-		PersonasACargo.Conyugue as ConyuguesACargo,
-		PersonasACargo.Padres as PadresACargo,
-		PersonasACargo.Otros as OtrasPersonasACargo,
-		--DatosPersonales.PersonasACargoId,
+			PersonasACargo.Hijo as HijosACargo,
+			PersonasACargo.Conyugue as ConyuguesACargo,
+			PersonasACargo.Padres as PadresACargo,
+			PersonasACargo.Otros as OtrasPersonasACargo,
+			--DatosPersonales.PersonasACargoId,
 
-		DatosPersonales.EstadoCivil,
+			DatosPersonales.EstadoCivil,
 
-		EPS.Tipo as EPS,
-		--DatosPersonales.EPSId,
+			EPS.Tipo as EPS,
+			--DatosPersonales.EPSId,
 
-		FondoPensiones.Tipo as FondoPensiones,
-		--DatosPersonales.FondoPensionesId,
+			FondoPensiones.Tipo as FondoPensiones,
+			--DatosPersonales.FondoPensionesId,
 
-		FondoCesantias.Tipo as FondoCesantias,
-		--DatosPersonales.FondoCesantiasId,
+			FondoCesantias.Tipo as FondoCesantias,
+			--DatosPersonales.FondoCesantiasId,
 
-		DatosGenerales.ComoSupo,
-		DatosGenerales.OtrosIngresos as TieneOtrosIngresos,
-		DatosGenerales.Ingreso,
-		DatosGenerales.ParientesTrabajando as ParientesEnLaEmpresa,
-		DatosGenerales.TipoVivienda,
-		--DatosPersonales.DatosGeneralesId,
+			DatosGenerales.ComoSupo,
+			DatosGenerales.OtrosIngresos as TieneOtrosIngresos,
+			DatosGenerales.Ingreso,
+			DatosGenerales.ParientesTrabajando as ParientesEnLaEmpresa,
+			DatosGenerales.TipoVivienda,
+			--DatosPersonales.DatosGeneralesId,
 
-		Practicas.Institucion,
-		Practicas.Programa,
-		Practicas.Titulo,
-		Practicas.FechaInicio,
-		Practicas.FechaFinalizacion,
-		Practicas.DocenciaServicios,
-		--DatosPersonales.PracticasId,
+			Practicas.Institucion,
+			Practicas.Programa,
+			Practicas.Titulo,
+			Practicas.FechaInicio,
+			Practicas.FechaFinalizacion,
+			Practicas.DocenciaServicios,
+			--DatosPersonales.PracticasId,
 
-		ContactoEmergencia.Nombre as ContactoEmergenciaNombre,
-		ContactoEmergencia.Parentesco as ContactoEmergenciaParentesco,
-		ContactoEmergencia.Celular as ContactoEmergenciaCelular,
+			ContactoEmergencia.Nombre as ContactoEmergenciaNombre,
+			ContactoEmergencia.Parentesco as ContactoEmergenciaParentesco,
+			ContactoEmergencia.Celular as ContactoEmergenciaCelular,
 
-		DatosFamiliares.Nombre as DatoFamiliarNombre,
-		FORMAT(DatosFamiliares.FechaNacimiento, 'dd-MM-yyyy') as DatoFamiliarFechaNacimiento,
-		DatosFamiliares.Parentesco as DatoFamiliarParentesco,
-		DatosFamiliares.Ocupacion as DatoFamiliarOcupacion,
+			DatosFamiliares.Nombre as DatoFamiliarNombre,
+			FORMAT(DatosFamiliares.FechaNacimiento, 'dd-MM-yyyy') as DatoFamiliarFechaNacimiento,
+			DatosFamiliares.Parentesco as DatoFamiliarParentesco,
+			DatosFamiliares.Ocupacion as DatoFamiliarOcupacion,
 
-		Escolaridad.Grado as EscolaridadGrado,
-		Escolaridad.Titulo as EscolaridadTitulo,
-		Escolaridad.Institucion as EscolaridadInstitucion,
-		Escolaridad.[Year] as EscolaridadAnio,
+			Escolaridad.Grado as EscolaridadGrado,
+			Escolaridad.Titulo as EscolaridadTitulo,
+			Escolaridad.Institucion as EscolaridadInstitucion,
+			Escolaridad.[Year] as EscolaridadAnio,
 
-		InfoLaboral.FechaIngreso as InfoLaboralFechaIngreso,
-		InfoLaboral.FechaRetiro as InfoLaboralFechaRetiro,
-		InfoLaboral.NombreEmpresa as InfoLaboralNombreEmpresa,
-		InfoLaboral.MotivoRetiro as InfoLaboralMotivoRetiro,
-		InfoLaboral.Celular as InfoLaboralCelular,
-		InfoLaboral.Cargo as InfoLaboralCargo,
+			InfoLaboral.FechaIngreso as InfoLaboralFechaIngreso,
+			InfoLaboral.FechaRetiro as InfoLaboralFechaRetiro,
+			InfoLaboral.NombreEmpresa as InfoLaboralNombreEmpresa,
+			InfoLaboral.MotivoRetiro as InfoLaboralMotivoRetiro,
+			InfoLaboral.Celular as InfoLaboralCelular,
+			InfoLaboral.Cargo as InfoLaboralCargo,
 
-		ReferenciasFamiliares.Nombre as ReferenciasFamiliaresNombre,
-		ReferenciasFamiliares.Parentesco as ReferenciasFamiliaresParentesco,
-		ReferenciasFamiliares.Celular as ReferenciasFamiliaresCelular,
+			ReferenciasFamiliares.Nombre as ReferenciasFamiliaresNombre,
+			ReferenciasFamiliares.Parentesco as ReferenciasFamiliaresParentesco,
+			ReferenciasFamiliares.Celular as ReferenciasFamiliaresCelular,
 
-		ReferenciasPersonales.Nombre as ReferenciasPersonalesNombre,
-		ReferenciasPersonales.Parentesco as ReferenciasPersonalesParentesco,
-		ReferenciasPersonales.Celular as ReferenciasPersonalesCelular,
+			ReferenciasPersonales.Nombre as ReferenciasPersonalesNombre,
+			ReferenciasPersonales.Parentesco as ReferenciasPersonalesParentesco,
+			ReferenciasPersonales.Celular as ReferenciasPersonalesCelular,
 
-		DatosPersonales.FechaCreacion,
+			DatosPersonales.FechaCreacion,
+			CASE
+				WHEN Usuario.Estado = 1 THEN 'Activo'
+				WHEN Usuario.Estado = 0 THEN 'Inactivo'
+			END AS Estado,
 
-		ROW_NUMBER() OVER (PARTITION BY Usuario.[User] ORDER BY (SELECT NULL)) AS RowNum
+			ROW_NUMBER() OVER (PARTITION BY Usuario.[User] ORDER BY (SELECT NULL)) AS RowNum
 
-		FROM 
-		Usuario
-		INNER JOIN DatosPersonales ON Usuario.[User] = DatosPersonales.UsuarioId
-		INNER JOIN Rol ON Usuario.RolId = Rol.Id
-		INNER JOIN TipoVinculo ON Usuario.TipoVinculoId = TipoVinculo.Id
-		INNER JOIN TipoContrato ON Usuario.TipoContratoId = TipoContrato.Id
-		INNER JOIN InfoDocumento ON Usuario.InfoDocumentoId = InfoDocumento.Id
-		INNER JOIN TipoDocumento ON InfoDocumento.TipoDocumentoId = TipoDocumento.Id
-		LEFT JOIN Direccion ON DatosPersonales.DireccionId = Direccion.Id
-		LEFT JOIN PersonasACargo ON DatosPersonales.PersonasACargoId = PersonasACargo.Id
-		LEFT JOIN EPS ON DatosPersonales.EPSId = EPS.Id
-		LEFT JOIN FondoPensiones ON DatosPersonales.FondoPensionesId = FondoPensiones.Id
-		LEFT JOIN FondoCesantias ON DatosPersonales.FondoCesantiasId = FondoCesantias.Id
-		LEFT JOIN DatosGenerales ON DatosPersonales.DatosGeneralesId = DatosGenerales.Id
-		LEFT JOIN Practicas ON DatosPersonales.PracticasId = Practicas.Id
-		LEFT JOIN ContactoEmergencia ON ContactoEmergencia.DatosPersonalesId = DatosPersonales.Id
-		LEFT JOIN DatosFamiliares ON DatosFamiliares.DatosPersonalesId = DatosPersonales.Id
-		LEFT JOIN Escolaridad ON Escolaridad.DatosPersonalesId = DatosPersonales.Id
-		LEFT JOIN InfoLaboral ON InfoLaboral.DatosPersonalesId = DatosPersonales.Id
-		LEFT JOIN ReferenciasFamiliares ON ReferenciasFamiliares.DatosPersonalesId = DatosPersonales.Id
-		LEFT JOIN ReferenciasPersonales ON ReferenciasPersonales.DatosPersonalesId = DatosPersonales.Id
-		WHERE Usuario.Estado = 1
+			FROM 
+			Usuario
+			INNER JOIN DatosPersonales ON Usuario.[User] = DatosPersonales.UsuarioId
+			INNER JOIN Rol ON Usuario.RolId = Rol.Id
+			INNER JOIN TipoVinculo ON Usuario.TipoVinculoId = TipoVinculo.Id
+			INNER JOIN TipoContrato ON Usuario.TipoContratoId = TipoContrato.Id
+			INNER JOIN InfoDocumento ON Usuario.InfoDocumentoId = InfoDocumento.Id
+			INNER JOIN TipoDocumento ON InfoDocumento.TipoDocumentoId = TipoDocumento.Id
+			LEFT JOIN Direccion ON DatosPersonales.DireccionId = Direccion.Id
+			LEFT JOIN PersonasACargo ON DatosPersonales.PersonasACargoId = PersonasACargo.Id
+			LEFT JOIN EPS ON DatosPersonales.EPSId = EPS.Id
+			LEFT JOIN FondoPensiones ON DatosPersonales.FondoPensionesId = FondoPensiones.Id
+			LEFT JOIN FondoCesantias ON DatosPersonales.FondoCesantiasId = FondoCesantias.Id
+			LEFT JOIN DatosGenerales ON DatosPersonales.DatosGeneralesId = DatosGenerales.Id
+			LEFT JOIN Practicas ON DatosPersonales.PracticasId = Practicas.Id
+			LEFT JOIN ContactoEmergencia ON ContactoEmergencia.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN DatosFamiliares ON DatosFamiliares.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN Escolaridad ON Escolaridad.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN InfoLaboral ON InfoLaboral.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN ReferenciasFamiliares ON ReferenciasFamiliares.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN ReferenciasPersonales ON ReferenciasPersonales.DatosPersonalesId = DatosPersonales.Id
+			WHERE Usuario.Estado = 1
 
-		)
-SELECT *
-FROM CTE
-WHERE RowNum = 1;
+			)
+	SELECT *
+	FROM CTE
+	WHERE RowNum = 1;
+END
+GO
+
+CREATE PROCEDURE GetActiveHV
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+	WITH CTE AS (
+		SELECT
+		Usuario.[User] as Documento,
+
+			Rol.Tipo as TipoRol,
+			--Usuario.RolId,
+
+			--Usuario.[Password],
+
+			TipoVinculo.Tipo as TipoVinculo,
+			--Usuario.TipoVinculoId,
+
+			TipoContrato.Tipo as TipoContrato,
+			--Usuario.TipoContratoId,
+
+			TipoDocumento.Tipo as TipoDocumento,
+
+			InfoDocumento.PaisExpedicion,
+			InfoDocumento.MunicipioExpedicion,
+			--Usuario.InfoDocumentoId,
+
+			Usuario.PrimerNombre,
+			Usuario.SegundoNombre,
+			Usuario.PrimerApellido,
+			Usuario.SegundoApellido,
+
+			DatosPersonales.LibretaMilitar,
+			DatosPersonales.FechaNacimiento,
+			DatosPersonales.PaisNacimiento,
+			DatosPersonales.MunicipioNacimiento,
+			DatosPersonales.Celular,
+			DatosPersonales.Email,
+			DatosPersonales.Sexo,
+
+			Direccion.DireccionCompleta as Direccion,
+			--DatosPersonales.DireccionId,
+    
+			DatosPersonales.MunicipioResidencia,
+			DatosPersonales.Estrato,
+			DatosPersonales.ViveCon,
+			DatosPersonales.GrupoEtnico,
+
+			PersonasACargo.Hijo as HijosACargo,
+			PersonasACargo.Conyugue as ConyuguesACargo,
+			PersonasACargo.Padres as PadresACargo,
+			PersonasACargo.Otros as OtrasPersonasACargo,
+			--DatosPersonales.PersonasACargoId,
+
+			DatosPersonales.EstadoCivil,
+
+			EPS.Tipo as EPS,
+			--DatosPersonales.EPSId,
+
+			FondoPensiones.Tipo as FondoPensiones,
+			--DatosPersonales.FondoPensionesId,
+
+			FondoCesantias.Tipo as FondoCesantias,
+			--DatosPersonales.FondoCesantiasId,
+
+			DatosGenerales.ComoSupo,
+			DatosGenerales.OtrosIngresos as TieneOtrosIngresos,
+			DatosGenerales.Ingreso,
+			DatosGenerales.ParientesTrabajando as ParientesEnLaEmpresa,
+			DatosGenerales.TipoVivienda,
+			--DatosPersonales.DatosGeneralesId,
+
+			Practicas.Institucion,
+			Practicas.Programa,
+			Practicas.Titulo,
+			Practicas.FechaInicio,
+			Practicas.FechaFinalizacion,
+			Practicas.DocenciaServicios,
+			--DatosPersonales.PracticasId,
+
+			ContactoEmergencia.Nombre as ContactoEmergenciaNombre,
+			ContactoEmergencia.Parentesco as ContactoEmergenciaParentesco,
+			ContactoEmergencia.Celular as ContactoEmergenciaCelular,
+
+			DatosFamiliares.Nombre as DatoFamiliarNombre,
+			FORMAT(DatosFamiliares.FechaNacimiento, 'dd-MM-yyyy') as DatoFamiliarFechaNacimiento,
+			DatosFamiliares.Parentesco as DatoFamiliarParentesco,
+			DatosFamiliares.Ocupacion as DatoFamiliarOcupacion,
+
+			Escolaridad.Grado as EscolaridadGrado,
+			Escolaridad.Titulo as EscolaridadTitulo,
+			Escolaridad.Institucion as EscolaridadInstitucion,
+			Escolaridad.[Year] as EscolaridadAnio,
+
+			InfoLaboral.FechaIngreso as InfoLaboralFechaIngreso,
+			InfoLaboral.FechaRetiro as InfoLaboralFechaRetiro,
+			InfoLaboral.NombreEmpresa as InfoLaboralNombreEmpresa,
+			InfoLaboral.MotivoRetiro as InfoLaboralMotivoRetiro,
+			InfoLaboral.Celular as InfoLaboralCelular,
+			InfoLaboral.Cargo as InfoLaboralCargo,
+
+			ReferenciasFamiliares.Nombre as ReferenciasFamiliaresNombre,
+			ReferenciasFamiliares.Parentesco as ReferenciasFamiliaresParentesco,
+			ReferenciasFamiliares.Celular as ReferenciasFamiliaresCelular,
+
+			ReferenciasPersonales.Nombre as ReferenciasPersonalesNombre,
+			ReferenciasPersonales.Parentesco as ReferenciasPersonalesParentesco,
+			ReferenciasPersonales.Celular as ReferenciasPersonalesCelular,
+
+			DatosPersonales.FechaCreacion,
+			CASE
+				WHEN Usuario.Estado = 1 THEN 'Activo'
+				WHEN Usuario.Estado = 0 THEN 'Inactivo'
+			END AS Estado,
+
+			ROW_NUMBER() OVER (PARTITION BY Usuario.[User] ORDER BY (SELECT NULL)) AS RowNum
+
+			FROM 
+			Usuario
+			INNER JOIN DatosPersonales ON Usuario.[User] = DatosPersonales.UsuarioId
+			INNER JOIN Rol ON Usuario.RolId = Rol.Id
+			INNER JOIN TipoVinculo ON Usuario.TipoVinculoId = TipoVinculo.Id
+			INNER JOIN TipoContrato ON Usuario.TipoContratoId = TipoContrato.Id
+			INNER JOIN InfoDocumento ON Usuario.InfoDocumentoId = InfoDocumento.Id
+			INNER JOIN TipoDocumento ON InfoDocumento.TipoDocumentoId = TipoDocumento.Id
+			LEFT JOIN Direccion ON DatosPersonales.DireccionId = Direccion.Id
+			LEFT JOIN PersonasACargo ON DatosPersonales.PersonasACargoId = PersonasACargo.Id
+			LEFT JOIN EPS ON DatosPersonales.EPSId = EPS.Id
+			LEFT JOIN FondoPensiones ON DatosPersonales.FondoPensionesId = FondoPensiones.Id
+			LEFT JOIN FondoCesantias ON DatosPersonales.FondoCesantiasId = FondoCesantias.Id
+			LEFT JOIN DatosGenerales ON DatosPersonales.DatosGeneralesId = DatosGenerales.Id
+			LEFT JOIN Practicas ON DatosPersonales.PracticasId = Practicas.Id
+			LEFT JOIN ContactoEmergencia ON ContactoEmergencia.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN DatosFamiliares ON DatosFamiliares.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN Escolaridad ON Escolaridad.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN InfoLaboral ON InfoLaboral.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN ReferenciasFamiliares ON ReferenciasFamiliares.DatosPersonalesId = DatosPersonales.Id
+			LEFT JOIN ReferenciasPersonales ON ReferenciasPersonales.DatosPersonalesId = DatosPersonales.Id
+			WHERE Usuario.Estado = 1
+
+			)
+	SELECT *
+	FROM CTE
+	WHERE RowNum = 1;
+END
+GO
 
 
 
