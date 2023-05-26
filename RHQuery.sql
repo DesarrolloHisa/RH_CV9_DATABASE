@@ -575,7 +575,19 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones,
+    DECLARE @Hoy DATE;
+    SET @Hoy = GETDATE();
+
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro,
+    CASE
+        WHEN c.FechaRetiro IS NULL THEN 
+            CAST(DATEDIFF(YEAR, c.FechaIngreso, @Hoy) AS NVARCHAR(10)) + ' años, ' +
+            CAST(DATEDIFF(MONTH, c.FechaIngreso, @Hoy) % 12 AS NVARCHAR(2)) + ' meses y ' +
+            CAST(DATEDIFF(DAY, c.FechaIngreso, @Hoy) % 30 AS NVARCHAR(2)) + ' días'
+        ELSE
+            c.TiempoVinculacion
+    END AS TiempoVinculacion,
+    c.MotivoRetiro, c.Observaciones,
     CASE
         WHEN e.Estado = 1 THEN 'Activo'
         WHEN e.Estado = 0 THEN 'Inactivo'
@@ -584,7 +596,7 @@ BEGIN
     JOIN Contrato c ON e.Documento = c.EmpleadoId
     JOIN EPS ep ON c.EPSId = ep.Id
     LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
-	LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
+    LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
     LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
     JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
 END
@@ -596,18 +608,30 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones, e.Estado,
-	CASE
+    DECLARE @Hoy DATE;
+    SET @Hoy = GETDATE();
+
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro,
+    CASE
+        WHEN c.FechaRetiro IS NULL THEN 
+            CAST(DATEDIFF(YEAR, c.FechaIngreso, @Hoy) AS NVARCHAR(10)) + ' años, ' +
+            CAST(DATEDIFF(MONTH, c.FechaIngreso, @Hoy) % 12 AS NVARCHAR(2)) + ' meses y ' +
+            CAST(DATEDIFF(DAY, c.FechaIngreso, @Hoy) % 30 AS NVARCHAR(2)) + ' días'
+        ELSE
+            c.TiempoVinculacion
+    END AS TiempoVinculacion,
+    c.MotivoRetiro, c.Observaciones,
+    CASE
         WHEN e.Estado = 1 THEN 'Activo'
         WHEN e.Estado = 0 THEN 'Inactivo'
     END AS Estado
-	FROM Empleado e
-	JOIN Contrato c ON e.Documento = c.EmpleadoId
-	JOIN EPS ep ON c.EPSId = ep.Id
-	LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
-	LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
-	LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
-	JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
+    FROM Empleado e
+    JOIN Contrato c ON e.Documento = c.EmpleadoId
+    JOIN EPS ep ON c.EPSId = ep.Id
+    LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
+    LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
+    LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
+    JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
 	WHERE e.Estado = 1
 END
 GO
@@ -618,17 +642,30 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro, c.TiempoVinculacion, c.MotivoRetiro, c.Observaciones, e.Estado,
-	CASE
+    DECLARE @Hoy DATE;
+    SET @Hoy = GETDATE();
+
+    SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro,
+    CASE
+        WHEN c.FechaRetiro IS NULL THEN 
+            CAST(DATEDIFF(YEAR, c.FechaIngreso, @Hoy) AS NVARCHAR(10)) + ' años, ' +
+            CAST(DATEDIFF(MONTH, c.FechaIngreso, @Hoy) % 12 AS NVARCHAR(2)) + ' meses y ' +
+            CAST(DATEDIFF(DAY, c.FechaIngreso, @Hoy) % 30 AS NVARCHAR(2)) + ' días'
+        ELSE
+            c.TiempoVinculacion
+    END AS TiempoVinculacion,
+    c.MotivoRetiro, c.Observaciones,
+    CASE
         WHEN e.Estado = 1 THEN 'Activo'
         WHEN e.Estado = 0 THEN 'Inactivo'
     END AS Estado
-	FROM Empleado e
-	JOIN Contrato c ON e.Documento = c.EmpleadoId
-	JOIN EPS ep ON c.EPSId = ep.Id
-	LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
-	LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
-	JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
+    FROM Empleado e
+    JOIN Contrato c ON e.Documento = c.EmpleadoId
+    JOIN EPS ep ON c.EPSId = ep.Id
+    LEFT JOIN FondoPensiones fp ON c.FondoPensionesId = fp.Id
+    LEFT JOIN FondoCesantias fc ON c.FondoCesantiasId = fc.Id
+    LEFT JOIN TipoContrato tc ON c.TipoContratoId = tc.Id
+    JOIN TipoCargo tca ON c.TipoCargoId = tca.Id
 	WHERE e.Documento = @doc 
 END
 GO
