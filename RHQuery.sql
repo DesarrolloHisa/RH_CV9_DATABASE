@@ -563,7 +563,6 @@ BEGIN
 			LEFT JOIN InfoLaboral ON InfoLaboral.DatosPersonalesId = DatosPersonales.Id
 			LEFT JOIN ReferenciasFamiliares ON ReferenciasFamiliares.DatosPersonalesId = DatosPersonales.Id
 			LEFT JOIN ReferenciasPersonales ON ReferenciasPersonales.DatosPersonalesId = DatosPersonales.Id
-			WHERE Usuario.Estado = 1
 
 			)
 	SELECT *
@@ -731,14 +730,19 @@ BEGIN
     SET NOCOUNT ON;
 
     DECLARE @Hoy DATE;
-    SET @Hoy = GETDATE();
 
+	SET @Hoy = GETDATE();
+
+	WITH ContratoOrdenado AS (
+		SELECT c.*, ROW_NUMBER() OVER (PARTITION BY c.EmpleadoId ORDER BY c.FechaIngreso) AS rn
+		FROM Contrato c
+	)
     SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro,
     CASE
-        WHEN c.FechaRetiro IS NULL THEN 
-            CAST(DATEDIFF(YEAR, c.FechaIngreso, @Hoy) AS NVARCHAR(10)) + ' años, ' +
-            CAST(DATEDIFF(MONTH, c.FechaIngreso, @Hoy) % 12 AS NVARCHAR(2)) + ' meses y ' +
-            CAST(DATEDIFF(DAY, c.FechaIngreso, @Hoy) % 30 AS NVARCHAR(2)) + ' días'
+		WHEN c.FechaRetiro IS NULL THEN 
+            CONVERT(VARCHAR(10), DATEDIFF( mm, c.FechaIngreso, @Hoy) / 12) + ' años ' +
+            CONVERT(VARCHAR(10), DATEDIFF( mm, c.FechaIngreso, @Hoy) % 12) + ' meses ' +
+            CONVERT(VARCHAR(10), DATEDIFF(dd, DATEADD(mm, DATEDIFF(mm, DATEADD(yy, DATEDIFF(yy, c.FechaIngreso, @Hoy), c.FechaIngreso), @Hoy), DATEADD(yy, DATEDIFF(yy, c.FechaIngreso, @Hoy), c.FechaIngreso)), @Hoy)) + ' días'
         ELSE
             c.TiempoVinculacion
     END AS TiempoVinculacion,
@@ -769,9 +773,9 @@ BEGIN
     SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro,
     CASE
         WHEN c.FechaRetiro IS NULL THEN 
-            CAST(DATEDIFF(YEAR, c.FechaIngreso, @Hoy) AS NVARCHAR(10)) + ' años, ' +
-            CAST(DATEDIFF(MONTH, c.FechaIngreso, @Hoy) % 12 AS NVARCHAR(2)) + ' meses y ' +
-            CAST(DATEDIFF(DAY, c.FechaIngreso, @Hoy) % 30 AS NVARCHAR(2)) + ' días'
+			CONVERT(VARCHAR(10), DATEDIFF( mm, c.FechaIngreso, @Hoy) / 12) + ' años ' +
+            CONVERT(VARCHAR(10), DATEDIFF( mm, c.FechaIngreso, @Hoy) % 12) + ' meses ' +
+            CONVERT(VARCHAR(10), DATEDIFF(dd, DATEADD(mm, DATEDIFF(mm, DATEADD(yy, DATEDIFF(yy, c.FechaIngreso, @Hoy), c.FechaIngreso), @Hoy), DATEADD(yy, DATEDIFF(yy, c.FechaIngreso, @Hoy), c.FechaIngreso)), @Hoy)) + ' días'
         ELSE
             c.TiempoVinculacion
     END AS TiempoVinculacion,
@@ -803,9 +807,9 @@ BEGIN
     SELECT e.Documento, e.LugarExpedicion, e.PrimerNombre, e.SegundoNombre, e.PrimerApellido, e.SegundoApellido, e.FechaNacimiento, e.Sexo, tca.Tipo AS TipoCargo, c.AreaFuncional, c.Salario, ep.Tipo AS TipoEPS, fp.Tipo AS TipoFondoPensiones, fc.Tipo AS TipoFondoCesantias, tc.Tipo AS TipoContrato, c.TiempoContratado, c.RegistroMedico, c.FechaIngreso, c.FechaRetiro,
     CASE
         WHEN c.FechaRetiro IS NULL THEN 
-            CAST(DATEDIFF(YEAR, c.FechaIngreso, @Hoy) AS NVARCHAR(10)) + ' años, ' +
-            CAST(DATEDIFF(MONTH, c.FechaIngreso, @Hoy) % 12 AS NVARCHAR(2)) + ' meses y ' +
-            CAST(DATEDIFF(DAY, c.FechaIngreso, @Hoy) % 30 AS NVARCHAR(2)) + ' días'
+            CONVERT(VARCHAR(10), DATEDIFF( mm, c.FechaIngreso, @Hoy) / 12) + ' años ' +
+            CONVERT(VARCHAR(10), DATEDIFF( mm, c.FechaIngreso, @Hoy) % 12) + ' meses ' +
+            CONVERT(VARCHAR(10), DATEDIFF(dd, DATEADD(mm, DATEDIFF(mm, DATEADD(yy, DATEDIFF(yy, c.FechaIngreso, @Hoy), c.FechaIngreso), @Hoy), DATEADD(yy, DATEDIFF(yy, c.FechaIngreso, @Hoy), c.FechaIngreso)), @Hoy)) + ' días'
         ELSE
             c.TiempoVinculacion
     END AS TiempoVinculacion,
