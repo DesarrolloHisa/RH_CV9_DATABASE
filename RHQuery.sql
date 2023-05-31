@@ -460,6 +460,7 @@ BEGIN
 			DatosPersonales.LibretaMilitar,
 			DatosPersonales.FechaNacimiento,
 			DatosPersonales.PaisNacimiento,
+			DatosPersonales.DepartamentoNacimiento,
 			DatosPersonales.MunicipioNacimiento,
 			DatosPersonales.Celular,
 			DatosPersonales.Email,
@@ -469,6 +470,7 @@ BEGIN
 			--DatosPersonales.DireccionId,
     
 			DatosPersonales.MunicipioResidencia,
+			DatosPersonales.BarrioResidencia,
 			DatosPersonales.Estrato,
 			DatosPersonales.ViveCon,
 			DatosPersonales.GrupoEtnico,
@@ -605,6 +607,7 @@ BEGIN
 			DatosPersonales.LibretaMilitar,
 			DatosPersonales.FechaNacimiento,
 			DatosPersonales.PaisNacimiento,
+			DatosPersonales.DepartamentoNacimiento,
 			DatosPersonales.MunicipioNacimiento,
 			DatosPersonales.Celular,
 			DatosPersonales.Email,
@@ -614,6 +617,7 @@ BEGIN
 			--DatosPersonales.DireccionId,
     
 			DatosPersonales.MunicipioResidencia,
+			DatosPersonales.BarrioResidencia,
 			DatosPersonales.Estrato,
 			DatosPersonales.ViveCon,
 			DatosPersonales.GrupoEtnico,
